@@ -1,0 +1,165 @@
+<html>
+
+<head>
+  <title>DD夜總會</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <style>
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 35%
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="alert alert-info text-center">DD夜總會</h1>
+
+  <div class="container ">
+    <div class="row ">
+      <div class="col-4 m-auto">
+        <img src="chang.jpg" class="rounded-circle border border-primary ">
+      </div>
+      <div class="col-4 m-auto">
+        <img src="chang.jpg" class="rounded-circle border border-primary ">
+      </div>
+      <div class="col-4 m-auto">
+        <img src="chang.jpg" class="rounded-circle border border-primary ">
+      </div>
+      <div class="col-4 m-auto">
+        <img src="chang.jpg" class="rounded-circle border border-primary ">
+      </div>
+      <div class="col-4 m-auto">
+        <img src="chang.jpg" class="rounded-circle border border-primary ">
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-6">
+        <!-- <img src="{{ url_for('video_feed') }}"> -->
+        <img src="chang.jpg" class="img-fluid img-thumbnail">
+      </div>
+      <div class="col-6">
+        <div class="col-8 my-3 mx-auto">
+          Status
+          <button id="auto" class="btn btn-outline-primary">Auto</button>
+          <button id="manual" class="btn btn-outline-primary">Manual</button>
+        </div>
+        <div class="col-8 my-3 mx-auto">
+          Motor1
+          <button id="motor1_pos" class="btn btn-outline-secondary">Positive</button>
+          <button id="motor1_neg" class="btn btn-outline-secondary">Negative</button>
+        </div>
+        <div class="col-8 my-3 mx-auto">
+          Motor2
+          <button id="motor2_pos" class="btn btn-outline-secondary">Positive</button>
+          <button id="motor2_neg" class="btn btn-outline-secondary">Negative</button>
+
+        </div>
+        <div class="col-8 my-3 mx-auto">
+          Motor3
+          <button id="motor3_pos" class="btn btn-outline-secondary">Positive</button>
+          <button id="motor3_neg" class="btn btn-outline-secondary">Negative</button>
+        </div>
+        <div class="col-8 my-3 mx-auto">
+          Motor4
+          <button id="motor4_pos" class="btn btn-outline-secondary">Positive</button>
+          <button id="motor4_neg" class="btn btn-outline-secondary">Negative</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+  <!-- <button onclick="location.href='http://127.0.0.1:5000/status/auto'">Auto</button> -->
+  <!-- <button id="manual" onclick="location.href='http://127.0.0.1:5000/status/manual'">Manual</button> -->
+
+
+  <script>
+    $("#manual").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/status/manual",
+        success: function (data) {
+          console.log(data);
+        }
+      });
+    });
+    $("#auto").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/status/auto",
+        success: function (data) {
+          console.log(data);
+        }
+      });
+    });
+    $("#motor1_pos").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor1/pos",
+      });
+    });
+    $("#motor1_neg").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor1/neg",
+      });
+    });
+    $("#motor2_pos").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor2/pos",
+      });
+    });
+    $("#motor2_neg").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor2/neg",
+      });
+    });
+    $("#motor3_pos").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor3/pos",
+      });
+    });
+    $("#motor3_neg").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor3/neg",
+      });
+    });
+    $("#motor4_pos").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor4/pos",
+      });
+    });
+    $("#motor4_neg").click(function () {
+      $.ajax({
+        type: "GET",
+        url: "http://127.0.0.1:5000/motor4/neg",
+      });
+    });
+
+
+
+
+  </Script>
+
+  <!-- <div>Status: {{status}} </div> -->
+
+
+</body>
+
+</html>
