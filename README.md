@@ -1,6 +1,6 @@
-Client: listening form Server via sockets.
-Server: Streaming video for Web.
-Web: Post the variable for server.
+Client: listening form Server via sockets.</br>
+Server: Streaming video for Web.</br>
+Web: Post the variable for server.</br>
 
 Requirement:
 
