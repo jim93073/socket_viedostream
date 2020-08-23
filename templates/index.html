@@ -19,55 +19,36 @@
 <body>
   <h1 class="alert alert-info text-center">DD夜總會</h1>
 
-  <div class="container ">
-    <div class="row ">
-      <div class="col-4 m-auto">
-        <img src="chang.jpg" class="rounded-circle border border-primary ">
-      </div>
-      <div class="col-4 m-auto">
-        <img src="chang.jpg" class="rounded-circle border border-primary ">
-      </div>
-      <div class="col-4 m-auto">
-        <img src="chang.jpg" class="rounded-circle border border-primary ">
-      </div>
-      <div class="col-4 m-auto">
-        <img src="chang.jpg" class="rounded-circle border border-primary ">
-      </div>
-      <div class="col-4 m-auto">
-        <img src="chang.jpg" class="rounded-circle border border-primary ">
-      </div>
-    </div>
-  </div>
-
   <div class="container my-5">
-    <div class="row">
-      <div class="col-6">
-        <!-- <img src="{{ url_for('video_feed') }}"> -->
-        <img src="chang.jpg" class="img-fluid img-thumbnail">
+    <div class="row p-0">
+      <div class="col-6 p-0 m-0">
+         <img src="{{ url_for('video_feed') }}"  class=" img-fluid p-0" style="width:100% !important "> 
+        <!--img src="chang.jpg" class="img-fluid img-thumbnail"-->
+         <div id="streaming"> </div>
       </div>
-      <div class="col-6">
-        <div class="col-8 my-3 mx-auto">
+      <div class="col-6 mt-5">
+        <div class="col-6 my-3 mx-auto">
           Status
           <button id="auto" class="btn btn-outline-primary">Auto</button>
           <button id="manual" class="btn btn-outline-primary">Manual</button>
         </div>
-        <div class="col-8 my-3 mx-auto">
+        <div class="col-6 my-3 mx-auto">
           Motor1
           <button id="motor1_pos" class="btn btn-outline-secondary">Positive</button>
           <button id="motor1_neg" class="btn btn-outline-secondary">Negative</button>
         </div>
-        <div class="col-8 my-3 mx-auto">
+        <div class="col-6 my-3 mx-auto">
           Motor2
           <button id="motor2_pos" class="btn btn-outline-secondary">Positive</button>
           <button id="motor2_neg" class="btn btn-outline-secondary">Negative</button>
 
         </div>
-        <div class="col-8 my-3 mx-auto">
+        <div class="col-6 my-3 mx-auto">
           Motor3
           <button id="motor3_pos" class="btn btn-outline-secondary">Positive</button>
           <button id="motor3_neg" class="btn btn-outline-secondary">Negative</button>
         </div>
-        <div class="col-8 my-3 mx-auto">
+        <div class="col-6 my-3 mx-auto">
           Motor4
           <button id="motor4_pos" class="btn btn-outline-secondary">Positive</button>
           <button id="motor4_neg" class="btn btn-outline-secondary">Negative</button>
@@ -151,11 +132,48 @@
         url: "http://127.0.0.1:5000/motor4/neg",
       });
     });
-
-
-
-
   </Script>
+
+
+	<!--websocket-->
+  <script>
+		ws = new WebSocket('ws://localhost:5000/web')
+		
+		ws.onopen = function(message){
+			console.log(message);
+		
+		}		
+		ws.onclose = function(){
+			console.log("Disconnected!!");
+		
+		}
+		ws.onerror = function(error){
+			console.log("error:" + error.name + error.number);
+		}
+	  ws.onmessage = function(message){
+	  	console.log(message.data)	  	
+	  	
+	  	
+	  	if(message.data.length>2){
+	  	  console.log("print data");
+	  	  /**
+	  	  var textNode = document.createTextNode(message.data);	  		
+	  	  var para = document.createElement("div");
+	  	  para.setAttribute("id", "detect");  	  
+	  	  
+	  	  
+	  		document.getElementById("streaming").appendChild(para.appendChild(textNode))
+				**/
+				$(document).ready(function(){
+				  $("#detect").remove();
+    			$("#streaming").append($("<div id='detect'>"+message.data+"</div>"))
+    			//$("#detect").remove();
+				})
+	  		
+	  	//	document.getElementById('detect').remove();
+	    }
+	  }
+  </script>
 
   <!-- <div>Status: {{status}} </div> -->
 
