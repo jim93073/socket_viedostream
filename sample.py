@@ -156,6 +156,17 @@ def detect(net, meta, im, thresh=.5, hier_thresh=.5, nms=.45):
     free_image(im)
     free_detections(dets, num)
     return res
+def bbox2points(bbox):
+    """
+    From bounding box yolo format
+    to corner points cv2 rectangle
+    """
+    x, y, w, h = bbox
+    xmin = int(round(x - (w / 2)))
+    xmax = int(round(x + (w / 2)))
+    ymin = int(round(y - (h / 2)))
+    ymax = int(round(y + (h / 2)))
+    return xmin, ymin, xmax, ymax
 
 def nparray_to_image(img):
     data = img.ctypes.data_as(POINTER(c_ubyte))
@@ -180,6 +191,10 @@ motor1 = 0 # 0:正轉 1 反轉
 motor2 = 0
 motor3 = 0
 
+
+data = [] #detect 
+
+
 vid = cv2.VideoCapture(0)
 
 
@@ -193,16 +208,24 @@ def server():
 
 #object detect
 def obj_detect():
-    global Status
+    global Status,data,label,confidence,bbox
     while True:
-        if Status == 0:
+#        if Status == 0:
+         if True:
             return_value,arr=vid.read()
             try:
                 im=nparray_to_image(arr)
             except:
                 pass
-            r = detect(net, meta, im)
-            print (r)
+            data = detect(net, meta, im)
+            #for label, confidence, bbox in detect(net, meta, im):
+             #   left, top, right, bottom = bbox2points(bbox)
+              #  cv2.rectangle(im, (left, top), (right, bottom), (0,255,0), 1)
+               # cv2.putText(im, "{} [{:.2f}]".format(label, float(confidence)),
+                #    (left, top - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                 #   (0,255,0), 2)
+            print(data)
+            time.sleep(0.5)
 #end object detect
 
 # http 路由，访问url是： http://localhost:5000/
@@ -294,9 +317,16 @@ def motor4_neg():
 
 @sockets.route('/echo')
 def echo_socket(ws):
+    global data
+
     while not ws.closed:
-        time.sleep(1)       
+        time.sleep(0.5)       
 #         print(message)
+        if(len(data)>0):
+            for i in range(len(data)):
+                ws.send(str(data[i][0])+str(data[i][1]))
+                
+            #data = []
         for i in range(5):
             if change[i] == True:
                 change[i] = False #initial  
@@ -313,13 +343,20 @@ def echo_socket(ws):
                 if i == 3:               
                     ws.send(str(i)+str(motor3))
                 if i == 4:               
-                    ws.send(str(i)+str(motor4))
-                
-    print("OUT")
+                    ws.send(str(i)+str(motor4))                
+    print("client disconnected!!!")
 
                 
+@sockets.route('/web')
+def echo_socket(ws):
+    global data
+    while not ws.closed:        
+        if(len(data)>0):
+            for i in range(len(data)):
+                ws.send(str(data[i][0])+", confidence: "+str(data[i][1]))
+        time.sleep(0.5)
 
-
+    print("Web disconnected!!!")
 
 
 def gen():
